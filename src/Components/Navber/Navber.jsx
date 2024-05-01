@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { ThemeProvider, THEME_ID, createTheme } from '@mui/material/styles';
 
 const navLinks = [
   { name: "Home", route: "/" },
@@ -7,8 +8,42 @@ const navLinks = [
   { name: "classes", route: "/classes" },
 ];
 
+const theme = createTheme({
+  palette:{
+    primary:{
+      main: "#ff0000"
+    },
+    secondary:{
+      main: "00ff00"
+    }
+  }
+});
+
 const Navber = () => {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [isMobileMenuOpen,setIsMobileMenuOpen] = useState(false)
+  const [isHome,setIsHome] = useState(false)
+  const [scrollPosition,setScrollPosition] = useState(0)
+  const [isFixed,setIsFixed] = useState(false)
+  const [isDarkMode,setIsDarkMode] = useState(false)
   const [navBg, setNavBg] = useState("bg-[#15151580]");
+
+  const toggleMobileMenu = () =>{
+    setIsMobileMenuOpen(!isMobileMenuOpen)
+  }
+
+  useEffect(() =>{
+    const darkClass = "dark"
+    const root = window.document.documentElement
+    if(isDarkMode){
+      root.classList.add(darkClass)
+    }
+    else{
+      root.classList.remove(darkClass)
+    }
+  },[isDarkMode])
+
   return (
     <nav>
       <div className="lg:w-[95%] mx-auto sm:px-6 lg:px-6">
@@ -49,6 +84,7 @@ const Navber = () => {
                     </NavLink>
                   </li>
                 ))}
+
                 {/* login based on users */}
                 <li>
                 <NavLink to={"/login"} className={({ isActive }) =>
@@ -63,6 +99,8 @@ const Navber = () => {
                         } hover:text-secondary duration-300`
                       }>Login</NavLink>
                 </li>
+
+
 
                 {/* toggle button */}
 
