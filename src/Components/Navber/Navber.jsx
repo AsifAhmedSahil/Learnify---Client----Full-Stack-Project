@@ -24,6 +24,7 @@ const Navber = () => {
   const location = useLocation()
   const [isMobileMenuOpen,setIsMobileMenuOpen] = useState(false)
   const [isHome,setIsHome] = useState(false)
+  const [isLogin,setIsLogin] = useState(false)
   const [scrollPosition,setScrollPosition] = useState(0)
   const [isFixed,setIsFixed] = useState(false)
   const [isDarkMode,setIsDarkMode] = useState(false)
@@ -44,8 +45,30 @@ const Navber = () => {
     }
   },[isDarkMode])
 
+
+  useEffect(() =>{
+    setIsHome(location.pathname === '/')
+    setIsLogin(location.pathname === '/login')
+    setIsFixed(location.pathname === '/register' || location.pathname === "/login")
+
+  },[location])
+
+  useEffect(() =>{
+    if(scrollPosition > 100){
+      if(isHome){
+        setNavBg("bg-white backdrop-filter backdrop-blur-xl bg-opacity-0 dark:text-white text-black")
+      }
+      else{
+        setNavBg("bg-white dark:bg-black dark:text-white text-black")
+      }
+    }
+    else{
+      setNavBg(`${isHome || location.pathname === '/' ? 'bg-transparent' : "bg-white dark:bg-black"} dark:text-white text-white`)
+    }
+  },[scrollPosition])
+
   return (
-    <nav>
+    <nav className=" ">
       <div className="lg:w-[95%] mx-auto sm:px-6 lg:px-6">
         <div className="px-4 py-4 flex justify-between items-center">
           {/* logo */}
