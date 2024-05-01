@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider, THEME_ID, createTheme } from '@mui/material/styles';
+import { Switch } from "@mui/material";
 
 const navLinks = [
   { name: "Home", route: "/" },
@@ -14,7 +15,7 @@ const theme = createTheme({
       main: "#ff0000"
     },
     secondary:{
-      main: "00ff00"
+      main: "#00ff00"
     }
   }
 });
@@ -52,6 +53,18 @@ const Navber = () => {
     setIsFixed(location.pathname === '/register' || location.pathname === "/login")
 
   },[location])
+
+
+  useEffect(() =>{
+    const handleScroll = () =>{
+      const currentPosition = window.pageYOffset
+      setScrollPosition(currentPosition)
+    }
+    window.addEventListener('scroll',handleScroll)
+    return window.addEventListener('scroll',handleScroll)
+  },[])
+
+
 
   useEffect(() =>{
     if(scrollPosition > 100){
@@ -128,7 +141,12 @@ const Navber = () => {
                 {/* toggle button */}
 
                 <li>
-                    light/dark
+                    <ThemeProvider theme={theme}>
+                      <div className="flex flex-col justify-center items-center">
+                      <Switch onChange={()=> setIsDarkMode(!isDarkMode)}></Switch>
+                      <h1 className="text-[8px]">Light/Dark</h1>
+                      </div>
+                    </ThemeProvider>
                 </li>
 
               </ul>
